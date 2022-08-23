@@ -65,11 +65,19 @@ export default function AlertModal(props: IProps) {
         <Container fluid={true}>
           {alerts.map((a, i) => (
             <Row key={i} className="m-2">
-              <Col>{a.category}</Col>
-              <Col>{a.category !== "Minute" && a.team}</Col>
-              <Col>{a.type}</Col>
-              <Col>{a.value}</Col>
-              <Col style={{ flex: 0 }}>
+              <Col xs={12} md={3}>
+                {a.category}
+              </Col>
+              <Col xs={12} md={3}>
+                {a.category !== "Minute" && a.team}
+              </Col>
+              <Col xs={12} md={3}>
+                {a.type}
+              </Col>
+              <Col xs={12} md={2}>
+                {a.value}
+              </Col>
+              <Col style={{ flex: 0 }} xs={12} md={1}>
                 <Button
                   size="sm"
                   variant="link"
@@ -84,6 +92,7 @@ export default function AlertModal(props: IProps) {
             <Col>
               <Form.Select
                 size="sm"
+                style={{ minWidth: 120 }}
                 value={alert.category}
                 onChange={(e) =>
                   setAlert((alert) => ({
@@ -101,6 +110,7 @@ export default function AlertModal(props: IProps) {
               {alert.category !== "Minute" && (
                 <Form.Select
                   size="sm"
+                  style={{ minWidth: 120 }}
                   value={alert.team}
                   onChange={(e) =>
                     setAlert((alert) => ({
@@ -118,6 +128,7 @@ export default function AlertModal(props: IProps) {
             <Col>
               <Form.Select
                 size="sm"
+                style={{ minWidth: 120 }}
                 value={alert.type}
                 onChange={(e) =>
                   setAlert((alert) => ({
@@ -135,6 +146,7 @@ export default function AlertModal(props: IProps) {
               <Form.Control
                 size="sm"
                 type="text"
+                style={{ minWidth: 120 }}
                 placeholder="Value"
                 required={true}
                 value={alert.value}

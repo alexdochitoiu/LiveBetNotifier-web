@@ -36,6 +36,9 @@ export default function Login() {
 
   return (
     <div className="Login">
+      <h2>
+        <i className="bi bi-bullseye text-primary m-2" /> Live Bet Notifier
+      </h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="username" className="mt-3">
           <Form.Label>Username</Form.Label>
