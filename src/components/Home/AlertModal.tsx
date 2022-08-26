@@ -3,8 +3,8 @@ import { Col, Container, Form, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-const type = ["Over", "Under or Equal"] as const;
-const teams = ["Home Team", "Away Team", "Any"] as const;
+const type = ["Over", "Under"] as const;
+const teams = ["Home Team", "Away Team", "Any", "Total"] as const;
 
 const categories = [
   "Minute",
@@ -36,7 +36,7 @@ export default function AlertModal(props: IProps) {
   const { show, alerts: defaultAlerts, onClose, onSave } = props;
   const [alert, setAlert] = React.useState<IAlert>({
     category: "Goals",
-    team: "Any",
+    team: "Total",
     type: "Over",
     value: "",
   });
