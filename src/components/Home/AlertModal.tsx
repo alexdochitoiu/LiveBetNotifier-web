@@ -4,10 +4,12 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 const type = ["Over", "Under"] as const;
+const scoreTypes = ["Home Team Leads", "Away Teams Leads", "Draw"] as const;
 const teams = ["Home Team", "Away Team", "Any", "Total"] as const;
 
 const categories = [
   "Minute",
+  "Score",
   "Goals",
   "Ball Possession",
   "Goal Attempts",
@@ -28,7 +30,7 @@ interface IProps {
 export interface IAlert {
   category: typeof categories[number];
   team?: typeof teams[number];
-  type: typeof type[number];
+  type: typeof type[number] | typeof scoreTypes[number];
   value: string;
 }
 
@@ -47,7 +49,7 @@ export default function AlertModal(props: IProps) {
   }, [defaultAlerts]);
 
   const handleAdd = () => {
-    if (!alert.value) {
+    if (!alert.value && alert.category !== "Score") {
       return;
     }
     setAlerts([...alerts, alert]);
@@ -69,13 +71,13 @@ export default function AlertModal(props: IProps) {
                 {a.category}
               </Col>
               <Col xs={12} md={3}>
-                {a.category !== "Minute" && a.team}
+                {a.category !== "Minute" && a.category !== "Score" && a.team}
               </Col>
               <Col xs={12} md={3}>
                 {a.type}
               </Col>
               <Col xs={12} md={2}>
-                {a.value}
+                {a.category !== "Score" && a.value}
               </Col>
               <Col style={{ flex: 0 }} xs={12} md={1}>
                 <Button
@@ -106,58 +108,81 @@ export default function AlertModal(props: IProps) {
                 ))}
               </Form.Select>
             </Col>
-            <Col>
-              {alert.category !== "Minute" && (
+            {alert.category !== "Score" && (
+              <>
+                {alert.category !== "Minute" && (
+                  <Col>
+                    <Form.Select
+                      size="sm"
+                      style={{ minWidth: 120 }}
+                      value={alert.team}
+                      onChange={(e) =>
+                        setAlert((alert) => ({
+                          ...alert,
+                          team: e.target.value as IAlert["team"],
+                        }))
+                      }
+                    >
+                      {teams.map((c) => (
+                        <option key={c}>{c}</option>
+                      ))}
+                    </Form.Select>
+                  </Col>
+                )}
+                <Col>
+                  <Form.Select
+                    size="sm"
+                    style={{ minWidth: 120 }}
+                    value={alert.type}
+                    onChange={(e) =>
+                      setAlert((alert) => ({
+                        ...alert,
+                        type: e.target.value as IAlert["type"],
+                      }))
+                    }
+                  >
+                    {type.map((c) => (
+                      <option key={c}>{c}</option>
+                    ))}
+                  </Form.Select>
+                </Col>
+                <Col>
+                  <Form.Control
+                    size="sm"
+                    type="text"
+                    style={{ minWidth: 120 }}
+                    placeholder="Value"
+                    required={true}
+                    value={alert.value}
+                    onChange={(e) =>
+                      setAlert((alert) => ({
+                        ...alert,
+                        value: e.target.value,
+                      }))
+                    }
+                  />
+                </Col>
+              </>
+            )}
+            {alert.category === "Score" && (
+              <Col>
                 <Form.Select
                   size="sm"
                   style={{ minWidth: 120 }}
-                  value={alert.team}
+                  value={alert.type}
                   onChange={(e) =>
                     setAlert((alert) => ({
                       ...alert,
-                      team: e.target.value as IAlert["team"],
+                      type: e.target.value as IAlert["type"],
                     }))
                   }
                 >
-                  {teams.map((c) => (
+                  {scoreTypes.map((c) => (
                     <option key={c}>{c}</option>
                   ))}
                 </Form.Select>
-              )}
-            </Col>
-            <Col>
-              <Form.Select
-                size="sm"
-                style={{ minWidth: 120 }}
-                value={alert.type}
-                onChange={(e) =>
-                  setAlert((alert) => ({
-                    ...alert,
-                    type: e.target.value as IAlert["type"],
-                  }))
-                }
-              >
-                {type.map((c) => (
-                  <option key={c}>{c}</option>
-                ))}
-              </Form.Select>
-            </Col>
-            <Col>
-              <Form.Control
-                size="sm"
-                type="text"
-                style={{ minWidth: 120 }}
-                placeholder="Value"
-                required={true}
-                value={alert.value}
-                onChange={(e) =>
-                  setAlert((alert) => ({
-                    ...alert,
-                    value: e.target.value,
-                  }))
-                }
-              />
-            </Col>
+              </Col>
+            )}
             <Col style={{ flex: 0 }}>
               <Button
                 size="sm"
