@@ -36,6 +36,7 @@ export default function Home() {
 
   const handleSave = (alerts: IAlert[]) => {
     setAlerts(alerts);
+    console.log(alerts);
     saveAlerts({ username, alerts });
   };
 
@@ -87,10 +88,14 @@ export default function Home() {
                 <Row className="m-1">
                   <Col className="border">{a.category}</Col>
                   <Col className="border">
-                    {a.category !== "Minute" && a.team}
+                    {a.category !== "Minute" &&
+                      a.category !== "Score" &&
+                      a.team}
                   </Col>
                   <Col className="border">{a.type}</Col>
-                  <Col className="border">{a.value}</Col>
+                  <Col className="border">
+                    {a.category !== "Score" && a.value}
+                  </Col>
                 </Row>
               </div>
             ))}
